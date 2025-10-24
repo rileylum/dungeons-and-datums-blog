@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import BlogCard from '../../../components/blog/BlogCard.astro';
+import { getAllTags, getPostsByTag } from '../../../utils/blog';
+
+export async function getStaticPaths() {
+  const tags = await getAllTags();
+  return tags.map((tag) => ({
+    params: { tag: tag.toLowerCase() },
+    props: { tag },
+  }));
+}
+
+const { tag } = Astro.props;
+const posts = await getPostsByTag(tag);
+---
+
+<BaseLayout
+  title={`Posts tagged with "${tag}"`}
+  description={`All posts tagged with ${tag}`}
+>
+  <div class="max-w-7xl mx-auto px-4 py-8">
+    <header class="mb-8">
+      <h1 class="text-4xl font-bold mb-2">
+        #{tag}
+      </h1>
+      <p class="text-base-content/60">
+        {posts.length} {posts.length === 1 ? 'post' : 'posts'} with this tag
+      </p>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {posts.map((post) => <BlogCard post={post} />)}
+    </div>
+
+    {
+      posts.length === 0 && (
+        <div class="text-center py-12">
+          <p class="text-xl text-base-content/60">
+            No posts found with this tag.
+          </p>
+        </div>
+      )
+    }
+  </div>
+</BaseLayout>

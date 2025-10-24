@@ -1,10 +1,23 @@
 ---
+import Navigation from '../components/Navigation.astro';
+import '../styles/global.css';
+
 interface Props {
   title: string;
   description?: string;
+  image?: string;
+  article?: boolean;
 }
 
-const { title, description = 'A blog about dungeons and datums' } = Astro.props;
+const {
+  title,
+  description = 'A blog about dungeons and datums',
+  image = '/favicon.svg',
+  article = false,
+} = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+const socialImage = new URL(image, Astro.site);
 ---
 
 <!doctype html>
@@ -15,9 +28,51 @@ const { title, description = 'A blog about dungeons and datums' } = Astro.props;
     <meta name="viewport" content="width=device-width" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
+    <link rel="canonical" href={canonicalURL} />
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/rss.xml" />
+
+    <script is:inline>
+      // Set theme immediately to prevent flash of wrong theme
+      const getTheme = () => {
+        if (typeof localStorage !== 'undefined' && localStorage.getItem('theme')) {
+          return localStorage.getItem('theme');
+        }
+        if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+          return 'topo-dark';
+        }
+        return 'topo-light';
+      };
+
+      const theme = getTheme();
+      document.documentElement.setAttribute('data-theme', theme);
+    </script>
+
     <title>{title}</title>
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={article ? 'article' : 'website'} />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:image" content={socialImage} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImage} />
   </head>
-  <body>
-    <slot />
+  <body class="bg-base-200">
+    <Navigation />
+    <main class="min-h-screen">
+      <slot />
+    </main>
+    <footer class="footer footer-center p-10 bg-base-300 text-base-content mt-12">
+      <aside>
+        <p class="font-bold">
+          Dungeons and Datums
+        </p>
+        <p>Exploring the intersection of role-playing games and data science</p>
+        <p>Copyright © {new Date().getFullYear()} - All rights reserved</p>
+      </aside>
+    </footer>
   </body>
 </html>

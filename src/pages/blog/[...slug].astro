@@ -1,0 +1,186 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import RelatedPosts from '../../components/blog/RelatedPosts.astro';
+import ReadingTime from '../../components/blog/ReadingTime.astro';
+import TagList from '../../components/blog/TagList.astro';
+import { calculateReadingTime } from '../../utils/blog';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts
+    .filter((post) => !post.data.draft)
+    .map((post) => ({
+      params: { slug: post.slug },
+      props: { post },
+    }));
+}
+
+const { post } = Astro.props;
+const { Content } = await post.render();
+const {
+  title,
+  description,
+  pubDate,
+  updatedDate,
+  category,
+  tags,
+  heroImage,
+  heroImageAlt,
+} = post.data;
+const readingTime = calculateReadingTime(post.body);
+
+const formattedPubDate = new Date(pubDate).toLocaleDateString('en-US', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+
+const formattedUpdatedDate = updatedDate
+  ? new Date(updatedDate).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    })
+  : null;
+---
+
+<BaseLayout title={title} description={description}>
+  <article class="max-w-4xl mx-auto px-4 py-8">
+    <header class="mb-8">
+      <div class="flex flex-wrap items-center gap-3 text-sm text-base-content/60 mb-4">
+        <time datetime={pubDate.toISOString()}>{formattedPubDate}</time>
+        <span>•</span>
+        <ReadingTime minutes={readingTime} />
+        <span>•</span>
+        <a
+          href={`/blog/category/${category.toLowerCase()}`}
+          class="badge badge-primary"
+        >
+          {category}
+        </a>
+      </div>
+
+      <h1 class="text-5xl font-bold mb-4">{title}</h1>
+      <p class="text-xl text-base-content/80 mb-4">{description}</p>
+
+      <TagList tags={tags} />
+
+      {
+        updatedDate && (
+          <p class="text-sm text-base-content/60 mt-4">
+            Last updated: {formattedUpdatedDate}
+          </p>
+        )
+      }
+    </header>
+
+    {
+      heroImage && (
+        <figure class="mb-8">
+          <img
+            src={heroImage}
+            alt={heroImageAlt || title}
+            class="w-full rounded-lg shadow-lg"
+          />
+        </figure>
+      )
+    }
+
+    <div class="prose max-w-none">
+      <Content />
+    </div>
+
+    <footer class="mt-12 pt-8 border-t border-base-300">
+      <RelatedPosts currentPost={post} />
+    </footer>
+  </article>
+</BaseLayout>
+
+<style>
+  .prose :global(h1) {
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+  }
+
+  .prose :global(h2) {
+    font-size: 1.875rem;
+    font-weight: 700;
+    margin-top: 1.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .prose :global(h3) {
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .prose :global(p) {
+    margin-bottom: 1rem;
+    line-height: 1.75;
+  }
+
+  .prose :global(a) {
+    color: oklch(var(--p));
+    text-decoration: none;
+  }
+
+  .prose :global(a:hover) {
+    text-decoration: underline;
+  }
+
+  .prose :global(ul),
+  .prose :global(ol) {
+    margin-bottom: 1rem;
+    margin-left: 1.5rem;
+  }
+
+  .prose :global(li) {
+    margin-bottom: 0.5rem;
+  }
+
+  .prose :global(code) {
+    background-color: oklch(var(--b2));
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.25rem;
+    font-size: 0.875rem;
+  }
+
+  .prose :global(pre) {
+    background-color: oklch(var(--b2));
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    margin-bottom: 1rem;
+  }
+
+  .prose :global(pre code) {
+    background-color: transparent;
+    padding: 0;
+  }
+
+  .prose :global(blockquote) {
+    border-left: 4px solid oklch(var(--p));
+    padding-left: 1rem;
+    font-style: italic;
+    margin: 1rem 0;
+  }
+
+  .prose :global(img) {
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    margin: 1.5rem 0;
+  }
+
+  .prose :global(strong) {
+    font-weight: 700;
+  }
+
+  .prose :global(em) {
+    font-style: italic;
+  }
+</style>

@@ -1,0 +1,73 @@
+@import 'tailwindcss';
+@plugin "daisyui";
+
+@plugin "daisyui/theme" {
+  name: "topo-light";
+  default: true;
+  color-scheme: light;
+
+  /* Topographic light theme - inspired by traditional topographic maps */
+  --color-primary: oklch(45% 0.15 25); /* Deep contour brown */
+  --color-primary-content: oklch(95% 0.02 45);
+
+  --color-secondary: oklch(55% 0.10 143); /* Elevation green */
+  --color-secondary-content: oklch(95% 0.02 45);
+
+  --color-accent: oklch(60% 0.12 195); /* Water blue */
+  --color-accent-content: oklch(95% 0.02 45);
+
+  --color-neutral: oklch(40% 0.02 30); /* Topographic gray */
+  --color-neutral-content: oklch(95% 0.02 45);
+
+  --color-base-100: oklch(96% 0.02 44); /* Cream paper */
+  --color-base-200: oklch(92% 0.02 42); /* Slightly darker cream */
+  --color-base-300: oklch(85% 0.02 38); /* Tan */
+  --color-base-content: oklch(20% 0.02 30); /* Dark brown text */
+
+  --color-info: oklch(60% 0.12 195);
+  --color-info-content: oklch(95% 0.02 45);
+
+  --color-success: oklch(55% 0.10 143);
+  --color-success-content: oklch(95% 0.02 45);
+
+  --color-warning: oklch(65% 0.15 18); /* Terracotta */
+  --color-warning-content: oklch(20% 0.02 30);
+
+  --color-error: oklch(55% 0.18 8);
+  --color-error-content: oklch(95% 0.02 45);
+}
+
+@plugin "daisyui/theme" {
+  name: "topo-dark";
+  color-scheme: dark;
+
+  /* Topographic dark theme - night map with warm accents */
+  --color-primary: oklch(65% 0.15 18); /* Warm terracotta */
+  --color-primary-content: oklch(20% 0.02 220);
+
+  --color-secondary: oklch(60% 0.10 143); /* Forest green */
+  --color-secondary-content: oklch(20% 0.02 220);
+
+  --color-accent: oklch(68% 0.12 195); /* Sky blue */
+  --color-accent-content: oklch(20% 0.02 220);
+
+  --color-neutral: oklch(35% 0.02 220); /* Dark slate */
+  --color-neutral-content: oklch(92% 0.02 44);
+
+  --color-base-100: oklch(22% 0.02 220); /* Dark charcoal */
+  --color-base-200: oklch(26% 0.02 220); /* Slightly lighter */
+  --color-base-300: oklch(32% 0.02 220); /* Medium gray */
+  --color-base-content: oklch(92% 0.02 44); /* Light cream text */
+
+  --color-info: oklch(68% 0.12 195);
+  --color-info-content: oklch(20% 0.02 220);
+
+  --color-success: oklch(60% 0.10 143);
+  --color-success-content: oklch(20% 0.02 220);
+
+  --color-warning: oklch(65% 0.15 18);
+  --color-warning-content: oklch(20% 0.02 220);
+
+  --color-error: oklch(62% 0.18 8);
+  --color-error-content: oklch(92% 0.02 44);
+}

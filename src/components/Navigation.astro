@@ -1,0 +1,330 @@
+---
+import { getAllCategories, getPublishedPosts } from '../utils/blog';
+
+const categories = await getAllCategories();
+const currentPath = Astro.url.pathname;
+
+const posts = await getPublishedPosts();
+const searchData = posts.map((post) => ({
+  slug: post.slug,
+  title: post.data.title,
+  description: post.data.description,
+  category: post.data.category,
+  tags: post.data.tags,
+  content: post.body.substring(0, 500),
+}));
+---
+
+<nav class="navbar bg-base-100 shadow-lg">
+  <div class="navbar-start">
+    <div class="dropdown">
+      <label tabindex="0" class="btn btn-ghost lg:hidden">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 6h16M4 12h8m-8 6h16"></path>
+        </svg>
+      </label>
+      <ul
+        tabindex="0"
+        class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
+      >
+        <li><a href="/">Home</a></li>
+        {
+          categories.length > 0 && (
+            <li>
+              <a>Categories</a>
+              <ul class="p-2">
+                {categories.map((category) => (
+                  <li>
+                    <a href={`/blog/category/${category.toLowerCase()}`}>
+                      {category}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          )
+        }
+        <li><a href="https://ozorc.com">OZ ORC</a></li>
+      </ul>
+    </div>
+    <a href="/" class="btn btn-ghost normal-case text-xl">Dungeons & Datums</a>
+  </div>
+  <div class="navbar-center hidden lg:flex">
+    <ul class="menu menu-horizontal px-1">
+      <li><a href="/" class:list={{ active: currentPath === '/' }}>Home</a></li>
+      {
+        categories.length > 0 && (
+          <li>
+            <details>
+              <summary>Categories</summary>
+              <ul class="p-2 bg-base-100 w-52">
+                {categories.map((category) => (
+                  <li>
+                    <a href={`/blog/category/${category.toLowerCase()}`}>
+                      {category}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </details>
+          </li>
+        )
+      }
+      <li><a href="https://ozorc.com">OZ ORC</a></li>
+    </ul>
+  </div>
+  <div class="navbar-end gap-2">
+    <div class="flex items-center gap-2" id="search-container">
+      <div id="search-input-container" class="hidden">
+        <input
+          type="text"
+          id="nav-search-input"
+          placeholder="Search posts..."
+          class="input input-bordered input-sm w-48"
+          aria-label="Search posts"
+        />
+      </div>
+      <button
+        id="search-toggle-btn"
+        class="btn btn-ghost btn-circle"
+        aria-label="Toggle search"
+        aria-expanded="false"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-5 w-5"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+      </button>
+    </div>
+    <button
+      id="theme-toggle-btn"
+      class="btn btn-ghost btn-circle"
+      aria-label="Toggle theme"
+    >
+      <svg
+        id="theme-toggle-light-icon"
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-5 w-5 hidden"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
+        ></path>
+      </svg>
+      <svg
+        id="theme-toggle-dark-icon"
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-5 w-5 hidden"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
+        ></path>
+      </svg>
+    </button>
+    <a href="/rss.xml" class="btn btn-ghost btn-circle" aria-label="RSS feed">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-5 w-5"
+        fill="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          d="M6.18 15.64a2.18 2.18 0 0 1 2.18 2.18C8.36 19 7.38 20 6.18 20C5 20 4 19 4 17.82a2.18 2.18 0 0 1 2.18-2.18M4 4.44A15.56 15.56 0 0 1 19.56 20h-2.83A12.73 12.73 0 0 0 4 7.27V4.44m0 5.66a9.9 9.9 0 0 1 9.9 9.9h-2.83A7.07 7.07 0 0 0 4 12.93V10.1z"
+        ></path>
+      </svg>
+    </a>
+  </div>
+</nav>
+
+<div
+  id="search-results-modal"
+  class="fixed inset-0 bg-black/50 hidden z-50 flex items-start justify-center pt-20"
+>
+  <div class="bg-base-100 rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto">
+    <div class="p-6">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-xl font-bold">Search Results</h3>
+        <button id="close-search-modal" class="btn btn-sm btn-circle btn-ghost">✕</button>
+      </div>
+      <div id="nav-results-container" class="space-y-4"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  import Fuse from 'fuse.js';
+
+  const searchData = JSON.parse(
+    document.getElementById('nav-search-data')?.textContent || '[]'
+  );
+
+  const fuse = new Fuse(searchData, {
+    keys: [
+      { name: 'title', weight: 3 },
+      { name: 'description', weight: 2 },
+      { name: 'tags', weight: 1.5 },
+      { name: 'category', weight: 1 },
+      { name: 'content', weight: 0.5 },
+    ],
+    threshold: 0.4,
+    includeScore: true,
+  });
+
+  const toggleBtn = document.getElementById('search-toggle-btn');
+  const inputContainer = document.getElementById('search-input-container');
+  const searchInput = document.getElementById('nav-search-input') as HTMLInputElement;
+  const resultsModal = document.getElementById('search-results-modal');
+  const resultsContainer = document.getElementById('nav-results-container');
+  const closeModalBtn = document.getElementById('close-search-modal');
+
+  let isSearchOpen = false;
+
+  const closeSearch = () => {
+    isSearchOpen = false;
+    inputContainer?.classList.add('hidden');
+    toggleBtn?.setAttribute('aria-expanded', 'false');
+    resultsModal?.classList.add('hidden');
+    if (searchInput) searchInput.value = '';
+  };
+
+  toggleBtn?.addEventListener('click', () => {
+    isSearchOpen = !isSearchOpen;
+
+    if (isSearchOpen) {
+      inputContainer?.classList.remove('hidden');
+      toggleBtn.setAttribute('aria-expanded', 'true');
+      searchInput?.focus();
+    } else {
+      closeSearch();
+    }
+  });
+
+  searchInput?.addEventListener('blur', () => {
+    // Delay to allow click events on search results to fire first
+    setTimeout(() => {
+      closeSearch();
+    }, 200);
+  });
+
+  searchInput?.addEventListener('input', () => {
+    const query = searchInput.value.trim();
+
+    if (!query) {
+      resultsModal?.classList.add('hidden');
+      return;
+    }
+
+    const results = fuse.search(query);
+
+    if (results.length === 0 && resultsContainer) {
+      resultsContainer.innerHTML =
+        '<p class="text-base-content/60">No results found.</p>';
+    } else if (resultsContainer) {
+      resultsContainer.innerHTML = results
+        .slice(0, 10)
+        .map(
+          (result) => `
+        <article class="card bg-base-200 p-4 hover:bg-base-300 transition-colors">
+          <a href="/blog/${result.item.slug}" class="block">
+            <h4 class="font-bold text-lg mb-2">${result.item.title}</h4>
+            <p class="text-sm text-base-content/80 mb-2">${result.item.description}</p>
+            <div class="flex gap-2 flex-wrap">
+              <span class="badge badge-primary badge-sm">${result.item.category}</span>
+              ${result.item.tags.map((tag: string) => `<span class="badge badge-outline badge-sm">#${tag}</span>`).join('')}
+            </div>
+          </a>
+        </article>
+      `
+        )
+        .join('');
+    }
+
+    resultsModal?.classList.remove('hidden');
+  });
+
+  closeModalBtn?.addEventListener('click', () => {
+    closeSearch();
+  });
+
+  resultsModal?.addEventListener('click', (e) => {
+    if (e.target === resultsModal) {
+      closeSearch();
+    }
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      closeSearch();
+    }
+  });
+
+  // Theme toggle functionality
+  const themeToggleBtn = document.getElementById('theme-toggle-btn');
+  const lightIcon = document.getElementById('theme-toggle-light-icon');
+  const darkIcon = document.getElementById('theme-toggle-dark-icon');
+
+  const updateThemeIcon = (theme: string) => {
+    if (theme === 'topo-dark') {
+      lightIcon?.classList.remove('hidden');
+      darkIcon?.classList.add('hidden');
+    } else {
+      lightIcon?.classList.add('hidden');
+      darkIcon?.classList.remove('hidden');
+    }
+  };
+
+  const getCurrentTheme = () => {
+    return document.documentElement.getAttribute('data-theme') || 'topo-light';
+  };
+
+  updateThemeIcon(getCurrentTheme());
+
+  themeToggleBtn?.addEventListener('click', () => {
+    const currentTheme = getCurrentTheme();
+    const newTheme = currentTheme === 'topo-light' ? 'topo-dark' : 'topo-light';
+
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+    updateThemeIcon(newTheme);
+  });
+
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    if (!localStorage.getItem('theme')) {
+      const newTheme = e.matches ? 'topo-dark' : 'topo-light';
+      document.documentElement.setAttribute('data-theme', newTheme);
+      updateThemeIcon(newTheme);
+    }
+  });
+</script>
+
+<script id="nav-search-data" type="application/json" set:html={JSON.stringify(searchData)} />

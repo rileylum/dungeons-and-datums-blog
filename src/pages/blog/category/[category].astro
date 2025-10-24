@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import BlogCard from '../../../components/blog/BlogCard.astro';
+import {
+  getAllCategories,
+  getPostsByCategory,
+} from '../../../utils/blog';
+
+export async function getStaticPaths() {
+  const categories = await getAllCategories();
+  return categories.map((category) => ({
+    params: { category: category.toLowerCase() },
+    props: { category },
+  }));
+}
+
+const { category } = Astro.props;
+const posts = await getPostsByCategory(category);
+---
+
+<BaseLayout
+  title={`${category} Posts`}
+  description={`All posts in the ${category} category`}
+>
+  <div class="max-w-4xl mx-auto px-4 py-8">
+    <header class="mb-12 text-center">
+      <h1 class="text-5xl font-bold mb-4">{category}</h1>
+      <p class="text-xl text-base-content/70">
+        {posts.length} {posts.length === 1 ? 'post' : 'posts'} in this category
+      </p>
+    </header>
+
+    <div class="flex flex-col gap-6 mb-12">
+      {posts.map((post) => <BlogCard post={post} />)}
+    </div>
+
+    {
+      posts.length === 0 && (
+        <div class="text-center py-12">
+          <p class="text-xl text-base-content/60">
+            No posts found in this category.
+          </p>
+        </div>
+      )
+    }
+  </div>
+</BaseLayout>

@@ -1,0 +1,78 @@
+---
+interface Props {
+  currentPage: number;
+  totalPages: number;
+  baseUrl: string;
+}
+
+const { currentPage, totalPages, baseUrl } = Astro.props;
+
+const getPageUrl = (page: number) => {
+  if (page === 1) {
+    return baseUrl;
+  }
+  return `${baseUrl}/page/${page}`;
+};
+
+const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
+
+const showPages = () => {
+  if (totalPages <= 7) {
+    return pages;
+  }
+
+  if (currentPage <= 4) {
+    return [...pages.slice(0, 5), -1, totalPages];
+  }
+
+  if (currentPage >= totalPages - 3) {
+    return [1, -1, ...pages.slice(totalPages - 5)];
+  }
+
+  return [
+    1,
+    -1,
+    currentPage - 1,
+    currentPage,
+    currentPage + 1,
+    -1,
+    totalPages,
+  ];
+};
+
+const visiblePages = showPages();
+---
+
+{
+  totalPages > 1 && (
+    <div class="join">
+      {currentPage > 1 && (
+        <a href={getPageUrl(currentPage - 1)} class="join-item btn">
+          «
+        </a>
+      )}
+
+      {visiblePages.map((page) =>
+        page === -1 ? (
+          <button class="join-item btn btn-disabled">...</button>
+        ) : (
+          <a
+            href={getPageUrl(page)}
+            class:list={[
+              'join-item btn',
+              { 'btn-active': page === currentPage },
+            ]}
+          >
+            {page}
+          </a>
+        )
+      )}
+
+      {currentPage < totalPages && (
+        <a href={getPageUrl(currentPage + 1)} class="join-item btn">
+          »
+        </a>
+      )}
+    </div>
+  )
+}
