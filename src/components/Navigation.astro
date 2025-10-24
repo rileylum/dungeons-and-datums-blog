@@ -15,7 +15,7 @@ const searchData = posts.map((post) => ({
 }));
 ---
 
-<nav class="navbar bg-base-100 shadow-lg">
+<nav class="navbar bg-base-100 shadow-lg" transition:persist>
   <div class="navbar-start">
     <div class="dropdown">
       <label tabindex="0" class="btn btn-ghost lg:hidden">
@@ -169,6 +169,7 @@ const searchData = posts.map((post) => ({
 <div
   id="search-results-modal"
   class="fixed inset-0 bg-black/50 hidden z-50 flex items-start justify-center pt-20"
+  transition:persist
 >
   <div class="bg-base-100 rounded-lg shadow-xl max-w-2xl w-full mx-4 max-h-[80vh] overflow-y-auto">
     <div class="p-6">
@@ -181,7 +182,7 @@ const searchData = posts.map((post) => ({
   </div>
 </div>
 
-<script>
+<script transition:persist>
   import Fuse from 'fuse.js';
 
   const searchData = JSON.parse(

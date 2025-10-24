@@ -10,7 +10,12 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint:fix": "eslint . --fix",
+    "new-post": "node scripts/new-post.js",
+    "generate-description": "node scripts/generate-description.js",
+    "generate-preview": "node scripts/generate-preview.js",
+    "generate-posts": "node scripts/generate-posts.js",
+    "cleanup-posts": "node scripts/cleanup-posts.js"
   },
   "dependencies": {
     "@astrojs/rss": "^4.0.13",
@@ -22,6 +27,7 @@
     "tailwindcss": "^4.1.14"
   },
   "devDependencies": {
+    "@clack/prompts": "^0.11.0",
     "@typescript-eslint/eslint-plugin": "^8.46.1",
     "@typescript-eslint/parser": "^8.46.1",
     "eslint": "^9.38.0",

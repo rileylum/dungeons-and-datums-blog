@@ -31,33 +31,45 @@ const formattedDate = new Date(pubDate).toLocaleDateString('en-US', {
       </figure>
     )
   }
-  <div class="card-body">
-    <div class="flex items-center gap-2 text-sm text-base-content/60 mb-2">
-      <time datetime={pubDate.toISOString()}>{formattedDate}</time>
-      <span>•</span>
-      <span>{readingTime} min read</span>
-      <span>•</span>
-      <a
-        href={`/blog/category/${category.toLowerCase()}`}
-        class="badge badge-primary badge-sm"
-      >
-        {category}
-      </a>
+  <div class="card-body flex flex-col">
+    <div class="flex flex-col gap-2 mb-2">
+      <div class="flex items-center gap-2 text-sm text-base-content/60">
+        <time datetime={pubDate.toISOString()}>{formattedDate}</time>
+        <span>•</span>
+        <span>{readingTime} min read</span>
+      </div>
+      <div>
+        <a
+          href={`/blog/category/${category.toLowerCase()}`}
+          class="badge badge-primary badge-sm"
+        >
+          {category}
+        </a>
+      </div>
     </div>
 
-    <h2 class="card-title">
+    <h2 class="card-title mb-3">
       <a href={`/blog/${post.slug}`} class="hover:text-primary transition-colors">
         {title}
       </a>
     </h2>
 
-    <p class="text-base-content/80">{preview || description}</p>
+    <div
+      class="text-base-content/80 overflow-hidden"
+      style="display: -webkit-box !important; -webkit-box-orient: vertical !important; -webkit-line-clamp: 5 !important;"
+    >
+      {preview || description}
+    </div>
 
-    <div class="card-actions justify-between items-center mt-4">
+    <div class="flex-grow"></div>
+
+    <div class="mt-4 space-y-3">
       <TagList tags={tags} />
-      <a href={`/blog/${post.slug}`} class="btn btn-primary btn-sm">
-        Read More
-      </a>
+      <div class="flex justify-end">
+        <a href={`/blog/${post.slug}`} class="btn btn-primary btn-sm">
+          Read More
+        </a>
+      </div>
     </div>
   </div>
 </article>

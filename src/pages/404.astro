@@ -1,0 +1,32 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="404 - Page Not Found | Dungeons and Datums"
+  description="The page you're looking for doesn't exist."
+>
+  <div class="container mx-auto px-4 py-16">
+    <div class="max-w-2xl mx-auto text-center">
+      <div class="mb-8">
+        <h1 class="text-8xl font-bold mb-4">404</h1>
+        <h2 class="text-3xl font-semibold mb-6">
+          Critical Miss! Page Not Found
+        </h2>
+        <p class="text-lg mb-8 opacity-80">
+          You rolled a natural 1 on your navigation check. The page you're
+          looking for doesn't exist in this dimension.
+        </p>
+      </div>
+
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a href="/" class="btn btn-primary">
+          Return to Home
+        </a>
+        <a href="/blog" class="btn btn-outline">
+          Browse All Posts
+        </a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>

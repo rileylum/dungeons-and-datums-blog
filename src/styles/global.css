@@ -71,3 +71,88 @@
   --color-error: oklch(62% 0.18 8);
   --color-error-content: oklch(92% 0.02 44);
 }
+
+/* Prevent flash of unstyled content during transitions */
+html {
+  background-color: oklch(26% 0.02 220); /* matches topo-dark base-200 */
+}
+
+html[data-theme="topo-light"] {
+  background-color: oklch(92% 0.02 42); /* matches topo-light base-200 */
+}
+
+/* View Transitions - Optimized for cross-browser compatibility */
+@view-transition {
+  navigation: auto;
+}
+
+/* Root transitions with improved cross-fade */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 0.25s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  mix-blend-mode: normal;
+}
+
+::view-transition-old(root) {
+  animation-name: fade-out-smooth;
+}
+
+::view-transition-new(root) {
+  animation-name: fade-in-smooth;
+}
+
+/* Smoother animations with opacity control */
+@keyframes fade-out-smooth {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-in-smooth {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Blog card transitions - smooth morphing between pages */
+::view-transition-old(post-*),
+::view-transition-new(post-*) {
+  animation-duration: 0.35s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+
+::view-transition-group(post-*) {
+  animation-duration: 0.35s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Prevent white flash during transitions */
+::view-transition-image-pair(root) {
+  isolation: isolate;
+}
+
+/* Ensure smooth background transitions */
+::view-transition-group(root) {
+  animation-duration: 0.25s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root),
+  ::view-transition-old(post-*),
+  ::view-transition-new(post-*),
+  ::view-transition-group(root),
+  ::view-transition-group(post-*) {
+    animation-duration: 0.05s !important;
+  }
+}
