@@ -8,7 +8,7 @@ export async function GET(context: APIContext) {
   return rss({
     title: 'Dungeons and Datums',
     description:
-      'A blog exploring the intersection of role-playing games and data science',
+      'Adelaide\'s Old School D&D, OSR, and NSR gaming blog - resources, tools, campaign journals, and community content from Australia',
     site: context.site || 'https://dungeonsanddatums.com',
     items: posts.map((post) => ({
       title: post.data.title,

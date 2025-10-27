@@ -1,6 +1,6 @@
 # Dungeons and Datums
 
-A blog exploring the intersection of tabletop role-playing games and data science, built with Astro, Tailwind CSS, and DaisyUI.
+A blog about Old School Renaissance (OSR), NSR games, and Old School D&D in Adelaide, Australia - featuring resources, tools, and campaign journals, built with Astro, Tailwind CSS, and DaisyUI.
 
 ## Features
 
