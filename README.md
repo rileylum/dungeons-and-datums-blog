@@ -2,38 +2,19 @@
 
 A blog about Old School Renaissance (OSR), NSR games, and Old School D&D in Adelaide, Australia - featuring resources, tools, and campaign journals, built with Astro, Tailwind CSS, and DaisyUI.
 
-## Features
+## Site URLs
 
-- ✅ **Markdown Blog Posts** - Write content in markdown with frontmatter
-- ✅ **Content Collections** - Type-safe content management with Astro
-- ✅ **Pagination** - Browse posts with 10 per page
-- ✅ **Categories & Tags** - Organize posts with categories and tags
-- ✅ **Draft Support** - Mark posts as drafts to hide them
-- ✅ **Reading Time** - Automatic reading time estimation
-- ✅ **Related Posts** - Suggest similar posts based on tags/category
-- ✅ **Search** - Client-side fuzzy search with Fuse.js
-- ✅ **RSS Feed** - Auto-generated RSS feed at `/rss.xml`
-- ✅ **SEO Optimized** - Open Graph tags, meta descriptions, canonical URLs
-- ✅ **Responsive Design** - Mobile-friendly with Tailwind + DaisyUI
+- **Production**: https://dungeonsanddatums.com
+- **Development**: http://localhost:4321
+- **Tools**: https://tools.dungeons-and-datums.com
 
-## Tech Stack
-
-- **Astro 5.14.4** - Static site generator
-- **Tailwind CSS 4.1.14** - Utility-first CSS framework
-- **DaisyUI 5.3.0** - Tailwind component library
-- **TypeScript** - Type safety
-- **Fuse.js** - Fuzzy search
-- **@astrojs/rss** - RSS feed generation
-- **ESLint** - Code linting
-- **Prettier** - Code formatting
-
-## Development
+## Quick Start
 
 ```bash
 # Install dependencies
 npm install
 
-# Start dev server (usually at http://localhost:4321)
+# Start dev server
 npm run dev
 
 # Build for production
@@ -49,198 +30,259 @@ npm run lint
 npm run format
 ```
 
-## Creating Blog Posts
-
-### 1. Create a New Markdown File
-
-Create a new `.md` file in `src/content/blog/`:
-
-```bash
-src/content/blog/my-new-post.md
-```
-
-### 2. Add Frontmatter
-
-All blog posts require frontmatter with the following fields:
-
-```markdown
----
-title: 'Your Post Title'
-description: 'A brief description of your post'
-pubDate: 2025-10-24
-category: 'Category Name'
-tags: ['tag1', 'tag2', 'tag3']
-draft: false
-heroImage: '/path/to/image.jpg' # Optional
-heroImageAlt: 'Image description' # Optional
-updatedDate: 2025-10-25 # Optional
----
-
-# Your content here
-
-Write your blog post content using markdown...
-```
-
-### 3. Frontmatter Fields
-
-| Field | Type | Required | Description |
-|-------|------|----------|-------------|
-| `title` | string | Yes | Post title |
-| `description` | string | Yes | Short description for SEO and preview |
-| `pubDate` | date | Yes | Publication date (YYYY-MM-DD) |
-| `category` | string | Yes | Single category for the post |
-| `tags` | array | Yes | Array of tags |
-| `draft` | boolean | Yes | Set to `true` to hide from site |
-| `heroImage` | string | No | Path to hero image |
-| `heroImageAlt` | string | No | Alt text for hero image |
-| `updatedDate` | date | No | Last update date |
-
-### 4. Writing Content
-
-Use standard markdown syntax for your content:
-
-```markdown
-# Heading 1
-## Heading 2
-### Heading 3
-
-**Bold text**
-*Italic text*
-
-- Bullet list
-- Item 2
-
-1. Numbered list
-2. Item 2
-
-[Link text](https://example.com)
-
-![Image alt](./image.jpg)
-
-> Blockquote
-
-`inline code`
-
-\`\`\`javascript
-// Code block
-const example = 'code';
-\`\`\`
-```
-
 ## Project Structure
 
 ```
 dungeons-and-datums/
-├── public/
-│   └── favicon.svg
 ├── src/
-│   ├── assets/          # Static assets
-│   ├── components/
-│   │   ├── blog/        # Blog-specific components
-│   │   │   ├── BlogCard.astro
-│   │   │   ├── Pagination.astro
-│   │   │   ├── RelatedPosts.astro
-│   │   │   ├── ReadingTime.astro
-│   │   │   ├── TagList.astro
-│   │   │   └── SearchBar.astro
-│   │   └── Navigation.astro
 │   ├── content/
-│   │   ├── blog/        # Your blog posts (markdown)
-│   │   └── config.ts    # Content collection schema
-│   ├── layouts/
-│   │   └── BaseLayout.astro
+│   │   ├── blog/              # Blog post markdown files
+│   │   └── config.ts          # Content collection schema
 │   ├── pages/
 │   │   ├── blog/
-│   │   │   ├── [...slug].astro     # Individual blog posts
-│   │   │   ├── category/
-│   │   │   │   └── [category].astro
-│   │   │   └── tag/
-│   │   │       └── [tag].astro
-│   │   ├── page/
-│   │   │   └── [page].astro        # Pagination pages
-│   │   ├── index.astro              # Home page
-│   │   └── rss.xml.ts               # RSS feed
-│   └── utils/
-│       ├── blog.ts      # Blog utility functions
-│       └── search.ts    # Search functionality
-├── astro.config.mjs
-├── package.json
-└── tsconfig.json
+│   │   │   ├── [...slug].astro       # Individual blog posts
+│   │   │   ├── category/[category].astro
+│   │   │   └── tag/[tag].astro
+│   │   ├── page/[page].astro         # Pagination
+│   │   ├── index.astro               # Homepage
+│   │   ├── tools.astro               # Tools page
+│   │   └── rss.xml.ts                # RSS feed
+│   ├── components/
+│   │   ├── blog/              # Blog-specific components
+│   │   └── Navigation.astro
+│   ├── layouts/
+│   │   └── BaseLayout.astro   # Main layout wrapper
+│   ├── utils/
+│   │   ├── blog.ts            # Blog helper functions
+│   │   └── search.ts          # Search functionality
+│   └── styles/
+│       └── global.css         # Global styles and themes
+├── scripts/
+│   ├── new-post.js            # Interactive post creation
+│   ├── generate-description.js   # AI description generator
+│   ├── generate-preview.js       # AI preview generator
+│   ├── generate-posts.js         # Dev: Generate example posts
+│   └── cleanup-posts.js          # Dev: Remove example posts
+├── public/                    # Static assets
+└── astro.config.mjs          # Astro configuration
 ```
 
-## Routes
+## Creating Blog Posts
 
-- `/` - Home page with latest posts (paginated)
-- `/page/[n]` - Additional pagination pages
-- `/blog/[slug]` - Individual blog post
-- `/blog/category/[category]` - Posts by category
-- `/blog/tag/[tag]` - Posts by tag
-- `/rss.xml` - RSS feed
+### Interactive CLI (Recommended)
 
-## Customization
+The easiest way to create a new blog post:
 
-### Update Site Information
-
-Edit `astro.config.mjs` to update your site URL:
-
-```javascript
-export default defineConfig({
-  site: 'https://yourdomain.com',
-  // ...
-});
+```bash
+npm run new-post
 ```
 
-### Change Theme
+This interactive tool will:
+- Prompt for post title (auto-generates slug)
+- Ask for description and preview
+- Let you select or create categories
+- Allow tag selection and custom tags
+- Set draft status
+- Optionally add hero image
 
-The site uses DaisyUI themes. Update the `data-theme` attribute in `src/layouts/BaseLayout.astro`:
+The post will be created at `src/content/blog/{slug}.md`.
 
-```html
-<html lang="en" data-theme="dark"> <!-- or "light", "cupcake", etc. -->
+### Manual Creation
+
+Create a new `.md` file in `src/content/blog/`:
+
+```markdown
+---
+title: 'Your Post Title'
+description: 'Short SEO-friendly description (1-2 sentences)'
+preview: >
+  Longer preview excerpt that appears on listing pages (1 paragraph)
+pubDate: 2025-10-27
+category: 'OSR'
+tags: ['old-school', 'rules']
+draft: false
+heroImage: '/images/hero.jpg'  # Optional
+heroImageAlt: 'Alt text'       # Optional
+updatedDate: 2025-10-28        # Optional
+---
+
+# Your Post Title
+
+Write your content here...
 ```
 
-### Adjust Pagination
+### AI Enhancement
 
-Change posts per page in `src/pages/index.astro` and `src/pages/page/[page].astro`:
+Generate SEO descriptions and preview excerpts using Claude CLI:
 
-```javascript
-const postsPerPage = 10; // Change this number
+```bash
+# Generate description for a specific post
+npm run generate-description my-post-slug
+
+# Interactive mode - select from list
+npm run generate-description
+
+# Generate preview excerpt
+npm run generate-preview my-post-slug
+
+# Interactive mode
+npm run generate-preview
+```
+
+**Requirements**: Claude Code CLI must be in your PATH.
+
+## Content Schema Reference
+
+### Required Fields
+
+- **title** (string): Post title
+- **description** (string): Short SEO meta description (1-2 sentences)
+- **pubDate** (date): Publication date (YYYY-MM-DD)
+- **category** (string): Single category
+- **tags** (array): Array of tag strings (minimum 1 tag)
+- **draft** (boolean): `true` to hide from site, `false` to publish
+
+### Optional Fields
+
+- **preview** (string): Longer excerpt for listing pages (1 paragraph)
+- **heroImage** (string): Path to hero image (relative to `public/`)
+- **heroImageAlt** (string): Alt text for hero image
+- **updatedDate** (date): Last update date (YYYY-MM-DD)
+
+### Field Distinction
+
+- **description**: Short SEO meta description for `<meta>` tags and social sharing
+- **preview**: Longer excerpt displayed on home page and category/tag listings
+
+## Adding New Pages
+
+Create a new `.astro` file in `src/pages/`:
+
+```astro
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// Your page logic here
+---
+
+<BaseLayout
+  title="Page Title | Dungeons and Datums"
+  description="Page description for SEO"
+>
+  <div class="container mx-auto px-4 py-16">
+    <h1 class="text-5xl font-bold mb-6">Your Page Title</h1>
+    <!-- Your content here -->
+  </div>
+</BaseLayout>
+```
+
+### Dynamic Routes
+
+- `[param].astro` - Single dynamic segment (e.g., `/blog/my-post`)
+- `[...slug].astro` - Catch-all route (e.g., `/blog/2024/10/my-post`)
+
+Dynamic routes must export a `getStaticPaths()` function. See existing pages like `src/pages/blog/[...slug].astro` for examples.
+
+## Development Workflow
+
+### Code Quality
+
+```bash
+# Lint code
+npm run lint
+
+# Fix linting issues automatically
+npm run lint:fix
+
+# Format code
+npm run format
+
+# Check formatting
+npm run format:check
+```
+
+### Development Utilities
+
+```bash
+# Generate example posts (default: 20)
+npm run generate-posts 50
+
+# Clean up all example posts
+npm run cleanup-posts
 ```
 
 ## Deployment
 
-This is a static site that can be deployed to any static hosting service:
+1. **Commit and push changes**:
+   ```bash
+   git add .
+   git commit -m "Your commit message"
+   git push
+   ```
 
-- **Netlify**: Connect your Git repository
-- **Vercel**: Import your Git repository
-- **GitHub Pages**: Use the Astro GitHub Pages action
-- **Cloudflare Pages**: Connect your repository
+2. **SSH to VPS**:
+   ```bash
+   ssh user@your-vps-ip
+   ```
 
-Build command: `npm run build`
-Output directory: `dist`
+3. **Navigate to project directory**:
+   ```bash
+   cd /path/to/dungeons-and-datums
+   ```
 
-## Adding More Features
+4. **Pull latest changes**:
+   ```bash
+   git pull
+   ```
 
-### Comments
+5. **Install dependencies** (if package.json changed):
+   ```bash
+   npm install
+   ```
 
-Consider adding comments with:
-- [Giscus](https://giscus.app/) (GitHub Discussions)
-- [Utterances](https://utteranc.es/) (GitHub Issues)
-- [Disqus](https://disqus.com/)
+6. **Build site**:
+   ```bash
+   npm run build
+   ```
 
-### Analytics
+The built site will be in the `dist/` directory.
 
-Add analytics with:
-- [Google Analytics](https://analytics.google.com/)
-- [Plausible](https://plausible.io/)
-- [Fathom](https://usefathom.com/)
+## Utility Functions
 
-### Newsletter
+### Blog Helpers (`src/utils/blog.ts`)
 
-Integrate a newsletter with:
-- [Mailchimp](https://mailchimp.com/)
-- [ConvertKit](https://convertkit.com/)
-- [Buttondown](https://buttondown.email/)
+- `getAllPosts()` - Get all posts sorted by date
+- `getPublishedPosts()` - Filter out drafts
+- `getPostsByCategory(category)` - Filter by category
+- `getPostsByTag(tag)` - Filter by tag
+- `getRelatedPosts(post, limit)` - Get related posts by category and tags
+- `calculateReadingTime(content)` - Estimate reading time (200 WPM)
+- `paginatePosts(posts, page, perPage)` - Split posts into pages
+- `getAllCategories()` - Get unique categories
+- `getAllTags()` - Get unique tags
 
-## License
+### Search (`src/utils/search.ts`)
 
-All rights reserved.
+Client-side fuzzy search using Fuse.js:
+- `createSearchIndex(posts)` - Create searchable index
+- `searchPosts(index, query)` - Search posts by title, description, tags, category, content
+
+Search weights: Title (3x), Description (2x), Tags (1.5x), Category (1x), Content (0.5x)
+
+## Tech Stack
+
+- **Astro 5.14** - Static site generator
+- **Tailwind CSS 4.1** - Utility-first CSS
+- **DaisyUI 5.3** - Component library
+- **TypeScript** - Type safety
+- **Fuse.js** - Fuzzy search
+- **@astrojs/rss** - RSS feed generation
+- **@astrojs/sitemap** - Sitemap generation
+- **ESLint + Prettier** - Code quality
+
+## Configuration
+
+- **Site URL**: Set in `astro.config.mjs` (https://dungeonsanddatums.com)
+- **Posts per page**: 10 (configured in `src/pages/index.astro` and `src/pages/page/[page].astro`)
+- **Themes**: Custom `topo-dark` and `topo-light` defined in `src/styles/global.css`
+- **Reading time**: 200 words per minute (configured in `src/utils/blog.ts`)
