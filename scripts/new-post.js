@@ -133,20 +133,30 @@ async function main() {
     finalCategory = customCategory;
   }
 
-  const tags = await p.multiselect({
-    message: 'Select tags (space to select, enter to confirm):',
-    options: existingTags.map(tag => ({ value: tag, label: tag })),
-    required: false,
-  });
+  let allTags = [];
 
-  if (p.isCancel(tags)) {
-    p.cancel('Operation cancelled.');
-    process.exit(0);
+  // Only show multiselect if there are existing tags
+  if (existingTags.length > 0) {
+    const tags = await p.multiselect({
+      message: 'Select tags (space to select, enter to confirm):',
+      options: existingTags.map(tag => ({ value: tag, label: tag })),
+      required: false,
+    });
+
+    if (p.isCancel(tags)) {
+      p.cancel('Operation cancelled.');
+      process.exit(0);
+    }
+
+    allTags = [...tags];
   }
 
   const customTags = await p.text({
-    message: 'Add custom tags (comma-separated, or press enter to skip):',
-    placeholder: 'probability, dice-mechanics, combat',
+    message: 'Add custom tags (comma-separated):',
+    placeholder: 'osr, old-school, Adelaide',
+    validate: (value) => {
+      if (allTags.length === 0 && !value) return 'At least one tag is required';
+    },
   });
 
   if (p.isCancel(customTags)) {
@@ -154,7 +164,6 @@ async function main() {
     process.exit(0);
   }
 
-  let allTags = [...tags];
   if (customTags) {
     const customTagsList = customTags.split(',').map(t => t.trim()).filter(Boolean);
     allTags = [...allTags, ...customTagsList];
