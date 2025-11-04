@@ -4,16 +4,21 @@ interface Props {
 }
 
 const { tags } = Astro.props;
+
+// Helper function to display tag in readable format
+const displayTag = (tag: string) => {
+  return tag.replace(/-/g, ' ');
+};
 ---
 
 <div class="flex flex-wrap gap-2">
   {
     tags.map((tag) => (
       <a
-        href={`/blog/tag/${tag.toLowerCase()}`}
+        href={`/blog/tag/${tag}`}
         class="badge badge-outline badge-sm hover:badge-primary transition-colors"
       >
-        #{tag}
+        #{displayTag(tag)}
       </a>
     ))
   }

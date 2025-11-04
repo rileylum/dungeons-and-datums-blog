@@ -19,6 +19,13 @@ function slugify(text) {
     .trim();
 }
 
+function normalizeTag(tag) {
+  return tag
+    .toLowerCase()
+    .replace(/\s+/g, '-')
+    .trim();
+}
+
 async function getExistingCategoriesAndTags() {
   const files = fs.readdirSync(BLOG_DIR);
   const categories = new Set();
@@ -42,7 +49,7 @@ async function getExistingCategoriesAndTags() {
       if (tagsMatch) {
         const tagsList = tagsMatch[1].match(/['"]([^'"]+)['"]/g);
         if (tagsList) {
-          tagsList.forEach(tag => tags.add(tag.replace(/['"]/g, '')));
+          tagsList.forEach(tag => tags.add(normalizeTag(tag.replace(/['"]/g, ''))));
         }
       }
     }
@@ -165,9 +172,12 @@ async function main() {
   }
 
   if (customTags) {
-    const customTagsList = customTags.split(',').map(t => t.trim()).filter(Boolean);
+    const customTagsList = customTags.split(',').map(t => normalizeTag(t)).filter(Boolean);
     allTags = [...allTags, ...customTagsList];
   }
+
+  // Normalize all tags
+  allTags = allTags.map(tag => normalizeTag(tag));
 
   if (allTags.length === 0) {
     p.cancel('At least one tag is required!');
@@ -247,7 +257,7 @@ Write your blog post content here...
 
     p.note(`${filepath}`, 'Post created at:');
 
-    p.outro(`Run ${p.inverse(' npm run dev ')} to preview your post!`);
+    p.outro(`Run 'npm run dev' to preview your post!`);
   } catch (error) {
     s.stop('Failed to create blog post');
     p.cancel(`Error: ${error.message}`);

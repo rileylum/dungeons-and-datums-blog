@@ -9,7 +9,7 @@ const blog = defineCollection({
     pubDate: z.coerce.date(),
     updatedDate: z.coerce.date().optional(),
     category: z.string(),
-    tags: z.array(z.string()),
+    tags: z.array(z.string().transform(tag => tag.toLowerCase().replace(/\s+/g, '-'))),
     draft: z.boolean().default(false),
     heroImage: z.string().optional(),
     heroImageAlt: z.string().optional(),
