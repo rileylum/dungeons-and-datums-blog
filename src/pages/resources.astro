@@ -1,0 +1,23 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ResourceCard from '../components/resources/ResourceCard.astro';
+import { getAllResources } from '../utils/resources';
+
+const resources = await getAllResources();
+---
+
+<BaseLayout
+  title="Resources | Dungeons and Datums"
+  description="Free OSR adventures, guides, and resources for old-school D&D campaigns"
+>
+  <div class="container mx-auto px-4 py-16 max-w-6xl">
+    <h1 class="text-5xl font-bold mb-6 text-center">Resources</h1>
+    <p class="text-xl text-center text-base-content/80 mb-12">
+      Free adventures, guides, and tools for your OSR campaigns
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {resources.map((resource) => <ResourceCard resource={resource} />)}
+    </div>
+  </div>
+</BaseLayout>

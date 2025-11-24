@@ -1,0 +1,46 @@
+---
+import type { Resource } from '../../utils/resources';
+
+interface Props {
+  resource: Resource;
+}
+
+const { resource } = Astro.props;
+const { title, description, category, resourceType, fileUrl, externalUrl } =
+  resource.data;
+
+const url = resourceType === 'download' ? fileUrl : externalUrl;
+const buttonText = resourceType === 'download' ? 'Download' : 'Visit';
+const iconClass = resourceType === 'download' ? '↓' : '→';
+---
+
+<article class="card bg-base-100 shadow-xl hover:shadow-2xl transition-shadow">
+  <div class="card-body">
+    <div class="flex items-center gap-2 mb-2">
+      <span class="badge badge-primary badge-sm">
+        {category}
+      </span>
+      <span class="text-xs text-base-content/60">
+        {resourceType === 'download' ? 'PDF' : 'External Link'}
+      </span>
+    </div>
+
+    <h2 class="card-title">
+      {title}
+    </h2>
+
+    {description && <p class="text-base-content/80">{description}</p>}
+
+    <div class="card-actions justify-end mt-4">
+      <a
+        href={url}
+        class="btn btn-primary btn-sm"
+        target={resourceType === 'link' ? '_blank' : undefined}
+        rel={resourceType === 'link' ? 'noopener noreferrer' : undefined}
+        download={resourceType === 'download' ? true : undefined}
+      >
+        {buttonText} {iconClass}
+      </a>
+    </div>
+  </div>
+</article>
