@@ -4,7 +4,7 @@ description: 'Explore how the Chainmail mass combat system scales fighter effect
 pubDate: 2025-11-03
 category: 'Ramblings'
 tags: ['od&d', 'combat', 'mass-combat', 'chainmail', 'house-rules']
-draft: false
+draft: true
 ---
 
 # Multiple attacks and Chainmail mass combat
